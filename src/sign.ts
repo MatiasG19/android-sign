@@ -1,104 +1,107 @@
-import * as exec from '@actions/exec'
-import * as core from '@actions/core'
-import * as io from '@actions/io'
-import * as path from 'path'
-import * as fs from 'fs'
+import * as exec from '@actions/exec';
+import * as core from '@actions/core';
+import * as io from '@actions/io';
+import * as path from "path";
+import * as fs from "fs";
 
 export async function signApkFile(
-  apkFile: string,
-  signingKeyFile: string,
-  alias: string,
-  keyStorePassword: string,
-  keyPassword?: string
+    apkFile: string,
+    signingKeyFile: string,
+    alias: string,
+    keyStorePassword: string,
+    keyPassword?: string
 ): Promise<string> {
-  core.debug('Zipaligning APK file')
 
-  // Find zipalign executable
-  const buildToolsVersion = process.env.BUILD_TOOLS_VERSION || '30.0.2'
-  const androidHome = process.env.ANDROID_HOME
-  if (!androidHome) {
-    core.error('require ANDROID_HOME to be execute')
-    throw new Error('ANDROID_HOME is null')
-  }
-  const buildTools = path.join(androidHome, `build-tools/${buildToolsVersion}`)
-  if (!fs.existsSync(buildTools)) {
-    core.error(`Couldnt find the Android build tools @ ${buildTools}`)
-  }
+    core.debug("Zipaligning APK file");
 
-  const zipAlign = path.join(buildTools, 'zipalign')
-  core.debug(`Found 'zipalign' @ ${zipAlign}`)
+    // Find zipalign executable
+    const buildToolsVersion = process.env.BUILD_TOOLS_VERSION || '30.0.2';
+    const androidHome = process.env.ANDROID_HOME;
+    if (!androidHome) {
+        core.error("require ANDROID_HOME to be execute");
+        throw new Error("ANDROID_HOME is null");
+    }
+    const buildTools = path.join(androidHome, `build-tools/${buildToolsVersion}`);
+    if (!fs.existsSync(buildTools)) {
+        core.error(`Couldnt find the Android build tools @ ${buildTools}`)
+    }
 
-  // Align the apk file
-  const alignedApkFile = apkFile.replace('.apk', '-aligned.apk')
-  await exec.exec(`"${zipAlign}"`, ['-c', '-v', '4', apkFile])
+    const zipAlign = path.join(buildTools, 'zipalign');
+    core.debug(`Found 'zipalign' @ ${zipAlign}`);
 
-  await exec.exec(`"cp"`, [apkFile, alignedApkFile])
+    // Align the apk file
+    const alignedApkFile = apkFile.replace('.apk', '-aligned.apk');
+    await exec.exec(`"${zipAlign}"`, [
+        '-c',
+        '-v', '4',
+        apkFile
+    ]);
 
-  core.debug('Signing APK file')
+    await exec.exec(`"cp"`, [
+        apkFile,
+        alignedApkFile
+    ]);
 
-  // find apksigner path
-  const apkSigner = path.join(buildTools, 'apksigner')
-  core.debug(`Found 'apksigner' @ ${apkSigner}`)
+    core.debug("Signing APK file");
 
-  // apksigner sign --ks my-release-key.jks --out my-app-release.apk my-app-unsigned-aligned.apk
-  const signedApkFile = apkFile.replace('.apk', '-signed.apk')
-  const args = [
-    'sign',
-    '--ks',
-    signingKeyFile,
-    '--ks-key-alias',
-    alias,
-    '--ks-pass',
-    `pass:${keyStorePassword}`,
-    '--out',
-    signedApkFile
-  ]
+    // find apksigner path
+    const apkSigner = path.join(buildTools, 'apksigner');
+    core.debug(`Found 'apksigner' @ ${apkSigner}`);
 
-  if (keyPassword) {
-    args.push('--key-pass', `pass:${keyPassword}`)
-  }
-  args.push(alignedApkFile)
+    // apksigner sign --ks my-release-key.jks --out my-app-release.apk my-app-unsigned-aligned.apk
+    const signedApkFile = apkFile.replace('.apk', '-signed.apk');
+    const args = [
+        'sign',
+        '--ks', signingKeyFile,
+        '--ks-key-alias', alias,
+        '--ks-pass', `pass:${keyStorePassword}`,
+        '--out', signedApkFile
+    ];
 
-  await exec.exec(`"${apkSigner}"`, args)
+    if (keyPassword) {
+        args.push('--key-pass', `pass:${keyPassword}`);
+    }
+    args.push(alignedApkFile);
 
-  // Verify
-  core.debug('Verifying Signed APK')
-  await exec.exec(`"${apkSigner}"`, ['verify', signedApkFile])
+    await exec.exec(`"${apkSigner}"`, args);
 
-  return signedApkFile
+    // Verify
+    core.debug("Verifying Signed APK");
+    await exec.exec(`"${apkSigner}"`, [
+        'verify',
+        signedApkFile
+    ]);
+
+    return signedApkFile
 }
 
 export async function signAabFile(
-  aabFile: string,
-  signingKeyFile: string,
-  alias: string,
-  keyStorePassword: string,
-  keyPassword?: string
+    aabFile: string,
+    signingKeyFile: string,
+    alias: string,
+    keyStorePassword: string,
+    keyPassword?: string,
 ): Promise<string> {
-  core.debug('Signing AAB file')
-  const jarSignerPath = await io.which('jarsigner', true)
-  core.debug(`Found 'jarsigner' @ ${jarSignerPath}`)
-  const args = [
-    '-verbose',
-    '-sigalg',
-    'SHA256withRSA',
-    '-digestalg',
-    'SHA-256',
-    '-keystore',
-    signingKeyFile,
-    '-storepass',
-    keyStorePassword
-  ]
+    core.debug("Signing AAB file");
+    const jarSignerPath = await io.which('jarsigner', true);
+    core.debug(`Found 'jarsigner' @ ${jarSignerPath}`);
+    const args = [
+        '-verbose',
+        '-sigalg', 'SHA256withRSA',
+        '-digestalg', 'SHA-256',
+        '-keystore', signingKeyFile,
+        '-storepass', keyStorePassword,
+    ];
 
-  if (keyPassword) {
-    args.push('-keypass', keyPassword)
-  }
+    if (keyPassword) {
+        args.push('-keypass', keyPassword);
+    }
 
-  const signedApkFile = aabFile.replace('.aab', '-signed.aab')
+    const signedApkFile = aabFile.replace('.aab', '-signed.aab');
 
-  args.push(signedApkFile, alias)
+    args.push(signedApkFile, alias);
 
-  await exec.exec(`"${jarSignerPath}"`, args)
+    await exec.exec(`"${jarSignerPath}"`, args);
 
-  return signedApkFile
+    return signedApkFile
 }
