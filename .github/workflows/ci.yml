@@ -40,5 +40,14 @@ jobs:
       - name: Build
         run: yarn all
 
-      - name: Run tests
-        run: yarn test
+      - name: Test signing apk
+        uses: MatiasG19/android-sign@${{ github.ref_name }}
+        with:
+          releaseDirectory: ${{ github.workspace }}/__tests__/assets
+          signingKeyBase64: '${{ secrets.TEST_KEY }}'
+          output: ${{ github.workspace }}/dist
+          alias: ${{ secrets.TEST_KEY_ALIAS_KEY0 }}
+          keyStorePassword: ${{ secrets.TEST_KEY_STORE_PASSWORD_123456 }}
+          keyPassword: ${{ secrets.TEST_KEY_PASSWORD_123456 }}
+        env:
+          BUILD_TOOLS_VERSION: '33.0.2'
