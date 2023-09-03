@@ -47,15 +47,15 @@ export async function signApkFile(
     '--ks',
     signingKeyFile,
     '--ks-key-alias',
-    `'${alias}'`,
+    `${alias}`,
     '--ks-pass',
-    `pass:'${keyStorePassword}'`,
+    `pass:${keyStorePassword}`,
     '--out',
-    `'${signedApkFile}'`
+    `${signedApkFile}`
   ]
 
   if (keyPassword) {
-    args.push('--key-pass', `pass:'${keyPassword}'`)
+    args.push('--key-pass', `pass:${keyPassword}`)
   }
   args.push(alignedApkFile)
 
