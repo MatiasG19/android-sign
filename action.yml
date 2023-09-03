@@ -1,5 +1,8 @@
-name: 'Android Sign'
+name: 'Android Sign 2'
 description: 'An action to sign an Android release APK or AAB'
+branding:
+  icon: 'award'
+  color: 'green'
 author: 'Tlaster'
 inputs:
   releaseDirectory:
@@ -24,5 +27,5 @@ inputs:
     description: 'The output directory for sign, default to build/signed'
     required: false
 runs:
-  using: 'node12'
+  using: 'node16'
   main: 'dist/index.js'
