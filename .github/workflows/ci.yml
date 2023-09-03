@@ -37,9 +37,6 @@ jobs:
       - name: Install app dependecies
         run: yarn --frozen-lockfile
 
-      - name: Build
-        run: yarn all
-
       - name: Test signing apk
         uses: MatiasG19/android-sign@ci/add-signing-test
         with:
