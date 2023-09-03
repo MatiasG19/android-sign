@@ -41,7 +41,7 @@ jobs:
         run: yarn all
 
       - name: Test signing apk
-        uses: MatiasG19/android-sign@${{ github.ref_name }}
+        uses: echo $
         with:
           releaseDirectory: ${{ github.workspace }}/__tests__/assets
           signingKeyBase64: '${{ secrets.TEST_KEY }}'
