@@ -216,7 +216,7 @@ function signApkFile(apkFile, signingKeyFile, alias, keyStorePassword, keyPasswo
             '--ks-key-alias',
             `${alias}`,
             '--ks-pass',
-            `pass:${keyStorePassword}`,
+            `pass:'${keyStorePassword}'`,
             '--out',
             `${signedApkFile}`
         ];

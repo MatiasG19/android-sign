@@ -49,7 +49,7 @@ export async function signApkFile(
     '--ks-key-alias',
     `${alias}`,
     '--ks-pass',
-    `pass:${keyStorePassword}`,
+    `pass:'${keyStorePassword}'`,
     '--out',
     `${signedApkFile}`
   ]
