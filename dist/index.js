@@ -226,7 +226,7 @@ function signApkFile(apkFile, signingKeyFile, alias, keyStorePassword, keyPasswo
         yield exec.exec(`"${apkSigner}"`, args);
         // Verify
         core.debug('Verifying signed APK');
-        yield exec.exec(`"${apkSigner}"`, ['verify', signedApkFile]);
+        yield exec.exec(`"${apkSigner}"`, ['-verify', signedApkFile]);
         return signedApkFile;
     });
 }
