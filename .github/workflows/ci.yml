@@ -46,7 +46,7 @@ jobs:
 
       - name: Test signing apk
         run: |
-          export RELEASEDIRECTORY=${{ github.workspace }}/__tests__/assets/apk
+          export RELEASEDIRECTORY=${{ github.workspace }}/__tests__/assets/apk/*.apk
           export SIGNINGKEYBASE64=${{ secrets.TEST_KEY }}
           export OUTPUT=${{ github.workspace }}/dist
           export KEYSTOREPASSWORD=${{ secrets.TEST_KEY_STORE_PASSWORD_123456 }}
