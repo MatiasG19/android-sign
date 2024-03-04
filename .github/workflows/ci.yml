@@ -45,13 +45,11 @@ jobs:
         run: yarn --frozen-lockfile
 
       - name: Test signing apk
-        uses: MatiasG19/android-sign@${{ github.head_ref }}
-        with:
-          releaseDirectory: ${{ github.workspace }}/__tests__/assets
-          signingKeyBase64: '${{ secrets.TEST_KEY }}'
-          output: ${{ github.workspace }}/dist
-          alias: ${{ secrets.TEST_KEY_ALIAS_KEY0 }}
-          keyStorePassword: ${{ secrets.TEST_KEY_STORE_PASSWORD_123456 }}
-          keyPassword: ${{ secrets.TEST_KEY_PASSWORD_123456 }}
-        env:
-          BUILD_TOOLS_VERSION: '33.0.2'
+        run: |
+          export RELEASEDIRECTORY=${{ github.workspace }}/__tests__/assets
+          export SIGNINGKEYBASE64=${{ secrets.TEST_KEY }}
+          export OUTPUT=${{ github.workspace }}/dist
+          export KEYSTOREPASSWORD=${{ secrets.TEST_KEY_STORE_PASSWORD_123456 }}
+          export KEYPASSWORD=${{ secrets.TEST_KEY_PASSWORD_123456 }}
+          export BUILD_TOOLS_VERSION=33.0.2
+          node dist/index.js
