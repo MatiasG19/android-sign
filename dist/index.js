@@ -226,7 +226,7 @@ function signApkFile(apkFile, signingKeyFile, alias, keyStorePassword, keyPasswo
         yield exec.exec(`"${apkSigner}"`, args);
         // Verify
         core.debug('Verifying signed APK');
-        yield exec.exec(`"${apkSigner}"`, ['-verify', signedApkFile]);
+        yield exec.exec(`"${apkSigner}"`, ['verify', signedApkFile]);
         return signedApkFile;
     });
 }
@@ -256,7 +256,7 @@ function signAabFile(aabFile, signingKeyFile, alias, keyStorePassword, keyPasswo
         yield exec.exec(`"${jarSignerPath}"`, args);
         // Verify
         core.debug('Verifying signed AAB');
-        yield exec.exec(`"${jarSignerPath}"`, ['verify', aabFile]);
+        yield exec.exec(`"${jarSignerPath}"`, ['-verify', aabFile]);
         // Rename
         const signedFile = aabFile.replace('.aab', '-signed.aab');
         yield exec.exec(`mv ${aabFile} ${signedFile}`);

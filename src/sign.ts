@@ -63,7 +63,7 @@ export async function signApkFile(
 
   // Verify
   core.debug('Verifying signed APK')
-  await exec.exec(`"${apkSigner}"`, ['-verify', signedApkFile])
+  await exec.exec(`"${apkSigner}"`, ['verify', signedApkFile])
 
   return signedApkFile
 }
@@ -103,7 +103,7 @@ export async function signAabFile(
 
   // Verify
   core.debug('Verifying signed AAB')
-  await exec.exec(`"${jarSignerPath}"`, ['verify', aabFile])
+  await exec.exec(`"${jarSignerPath}"`, ['-verify', aabFile])
 
   // Rename
   const signedFile = aabFile.replace('.aab', '-signed.aab')
