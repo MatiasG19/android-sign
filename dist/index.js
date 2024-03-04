@@ -205,7 +205,7 @@ function signApkFile(apkFile, signingKeyFile, alias, keyStorePassword, keyPasswo
         core.debug('Signing APK');
         // find apksigner path
         const apkSigner = path.join(buildTools, 'apksigner');
-        core.debug(`Found 'apksigner' @ ${apkSigner}`);
+        core.debug(`Found apksigner: ${apkSigner}`);
         // apksigner sign --ks my-release-key.jks --out my-app-release.apk my-app-unsigned-aligned.apk
         const signedApkFile = apkFile.replace('.apk', '-signed.apk');
         const args = [
@@ -235,7 +235,7 @@ function signAabFile(aabFile, signingKeyFile, alias, keyStorePassword, keyPasswo
     return __awaiter(this, void 0, void 0, function* () {
         core.debug('Signing AAB');
         const jarSignerPath = yield io.which('jarsigner', true);
-        core.debug(`Found 'jarsigner' @ ${jarSignerPath}`);
+        core.debug(`Found jarsigner: ${jarSignerPath}`);
         // jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 -keystore myKeyStore.jks
         // -storepass myStorePassword -keypass myKeyPassword myUnsignedAAB.aab alias
         const args = [
