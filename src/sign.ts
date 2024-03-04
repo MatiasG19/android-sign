@@ -26,7 +26,7 @@ export async function signApkFile(
   }
 
   const zipAlign = path.join(buildTools, 'zipalign')
-  core.debug(`Found 'zipalign' @ ${zipAlign}`)
+  core.debug(`Found Zipalign: ${zipAlign}`)
 
   // Align the apk file
   const alignedApkFile = apkFile.replace('.apk', '-aligned.apk')
@@ -38,7 +38,7 @@ export async function signApkFile(
 
   // find apksigner path
   const apkSigner = path.join(buildTools, 'apksigner')
-  core.debug(`Found apksigner: ${apkSigner}`)
+  core.debug(`Found Apksigner: ${apkSigner}`)
 
   // apksigner sign --ks my-release-key.jks --out my-app-release.apk my-app-unsigned-aligned.apk
   const signedApkFile = apkFile.replace('.apk', '-signed.apk')
@@ -77,7 +77,7 @@ export async function signAabFile(
 ): Promise<string> {
   core.debug('Signing AAB')
   const jarSignerPath = await io.which('jarsigner', true)
-  core.debug(`Found jarsigner: ${jarSignerPath}`)
+  core.debug(`Found Jarsigner: ${jarSignerPath}`)
 
   // jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 -keystore myKeyStore.jks
   // -storepass myStorePassword -keypass myKeyPassword myUnsignedAAB.aab alias
