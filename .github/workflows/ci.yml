@@ -38,7 +38,7 @@ jobs:
         run: yarn --frozen-lockfile
 
       - name: Test signing apk
-        uses: MatiasG19/android-sign@ci/add-signing-test
+        uses: MatiasG19/android-sign@${{ github.head_ref }}
         with:
           releaseDirectory: ${{ github.workspace }}/__tests__/assets
           signingKeyBase64: '${{ secrets.TEST_KEY }}'
