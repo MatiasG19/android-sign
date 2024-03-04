@@ -90,25 +90,24 @@ function run() {
                             _f = releaseFiles_1_1.value;
                             _l = false;
                             const releaseFile = _f;
-                            if (releaseFile !== undefined) {
-                                const releaseFilePath = path_1.default.join(releaseDir, releaseFile.name);
-                                let signedReleaseFile = '';
-                                if (releaseFile.name.endsWith('.apk')) {
-                                    signedReleaseFile = yield (0, sign_1.signApkFile)(releaseFilePath, signingKey, alias, keyStorePassword, keyPassword);
-                                }
-                                else if (releaseFile.name.endsWith('.aab')) {
-                                    signedReleaseFile = yield (0, sign_1.signAabFile)(releaseFilePath, signingKey, alias, keyStorePassword, keyPassword);
-                                }
-                                else {
-                                    core.error('No valid release file to sign, abort.');
-                                    core.setFailed('No valid release file to sign.');
-                                }
-                                fs_1.default.copyFileSync(signedReleaseFile, path_1.default.join(output, (_j = signedReleaseFile.split(/(\\|\/)/g).pop()) !== null && _j !== void 0 ? _j : releaseFile.name));
-                            }
-                            else {
+                            if (releaseFile === undefined) {
                                 core.error('No release file (.apk or .aab) could be found. Abort.');
                                 core.setFailed('No release file (.apk or .aab) could be found.');
                             }
+                            core.debug(`File found: ${releaseFile}`);
+                            const releaseFilePath = path_1.default.join(releaseDir, releaseFile.name);
+                            let signedReleaseFile = '';
+                            if (releaseFile.name.endsWith('.apk')) {
+                                signedReleaseFile = yield (0, sign_1.signApkFile)(releaseFilePath, signingKey, alias, keyStorePassword, keyPassword);
+                            }
+                            else if (releaseFile.name.endsWith('.aab')) {
+                                signedReleaseFile = yield (0, sign_1.signAabFile)(releaseFilePath, signingKey, alias, keyStorePassword, keyPassword);
+                            }
+                            else {
+                                core.error('No valid release file to sign, abort.');
+                                core.setFailed('No valid release file to sign.');
+                            }
+                            fs_1.default.copyFileSync(signedReleaseFile, path_1.default.join(output, (_j = signedReleaseFile.split(/(\\|\/)/g).pop()) !== null && _j !== void 0 ? _j : releaseFile.name));
                         }
                     }
                     catch (e_2_1) { e_2 = { error: e_2_1 }; }
@@ -203,10 +202,10 @@ function signApkFile(apkFile, signingKeyFile, alias, keyStorePassword, keyPasswo
         const alignedApkFile = apkFile.replace('.apk', '-aligned.apk');
         yield exec.exec(`"${zipAlign}"`, ['-c', '-v', '4', apkFile]);
         yield exec.exec(`"cp"`, [apkFile, alignedApkFile]);
-        core.debug('Signing APK file');
+        core.debug('Signing APK');
         // find apksigner path
         const apkSigner = path.join(buildTools, 'apksigner');
-        core.debug(`Found 'apksigner' @ ${apkSigner}`);
+        core.debug(`Found apksigner: ${apkSigner}`);
         // apksigner sign --ks my-release-key.jks --out my-app-release.apk my-app-unsigned-aligned.apk
         const signedApkFile = apkFile.replace('.apk', '-signed.apk');
         const args = [
@@ -226,7 +225,7 @@ function signApkFile(apkFile, signingKeyFile, alias, keyStorePassword, keyPasswo
         args.push(alignedApkFile);
         yield exec.exec(`"${apkSigner}"`, args);
         // Verify
-        core.debug('Verifying Signed APK');
+        core.debug('Verifying signed APK');
         yield exec.exec(`"${apkSigner}"`, ['verify', signedApkFile]);
         return signedApkFile;
     });
@@ -234,9 +233,11 @@ function signApkFile(apkFile, signingKeyFile, alias, keyStorePassword, keyPasswo
 exports.signApkFile = signApkFile;
 function signAabFile(aabFile, signingKeyFile, alias, keyStorePassword, keyPassword) {
     return __awaiter(this, void 0, void 0, function* () {
-        core.debug('Signing AAB file');
+        core.debug('Signing AAB');
         const jarSignerPath = yield io.which('jarsigner', true);
-        core.debug(`Found 'jarsigner' @ ${jarSignerPath}`);
+        core.debug(`Found jarsigner: ${jarSignerPath}`);
+        // jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 -keystore myKeyStore.jks
+        // -storepass myStorePassword -keypass myKeyPassword myUnsignedAAB.aab alias
         const args = [
             '-verbose',
             '-sigalg',
@@ -251,10 +252,15 @@ function signAabFile(aabFile, signingKeyFile, alias, keyStorePassword, keyPasswo
         if (keyPassword) {
             args.push('-keypass', keyPassword);
         }
-        const signedApkFile = aabFile.replace('.aab', '-signed.aab');
-        args.push(signedApkFile, alias);
+        args.push(aabFile, alias);
         yield exec.exec(`"${jarSignerPath}"`, args);
-        return signedApkFile;
+        // Verify
+        core.debug('Verifying signed AAB');
+        yield exec.exec(`"${jarSignerPath}"`, ['-verify', aabFile]);
+        // Rename
+        const signedFile = aabFile.replace('.aab', '-signed.aab');
+        yield exec.exec(`mv ${aabFile} ${signedFile}`);
+        return signedFile;
     });
 }
 exports.signAabFile = signAabFile;
