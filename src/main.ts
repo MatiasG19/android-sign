@@ -1,11 +1,11 @@
 import * as core from '@actions/core'
-import fs, {Dirent} from 'fs'
+import fs, { Dirent } from 'fs'
 import path from 'path'
-import {signAabFile, signApkFile} from './sign'
+import { signAabFile, signApkFile } from './sign'
 
 function findReleaseFile(releaseDir: string): Dirent[] {
   return fs
-    .readdirSync(releaseDir, {withFileTypes: true})
+    .readdirSync(releaseDir, { withFileTypes: true })
     .filter(item => !item.isDirectory())
     .filter(item => item.name.endsWith('.apk') || item.name.endsWith('.aab'))
 }
@@ -26,7 +26,7 @@ async function run(): Promise<void> {
     const signingKey = path.join(buildDir, 'signingKey.jks')
     fs.writeFileSync(signingKey, signingKeyBase64, 'base64')
     if (!fs.existsSync(output)) {
-      fs.mkdirSync(output, {recursive: true})
+      fs.mkdirSync(output, { recursive: true })
     }
     for await (const releaseDir of releaseDirs) {
       const releaseFiles = findReleaseFile(releaseDir)
