@@ -4,10 +4,20 @@ updates:
     directory: '/'
     schedule:
       interval: 'weekly'
+    groups:
+      patch-dependencies:
+        update-types: 
+          - "patch"
+    labels:
+      - 'dependencies'
 
   - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:
       interval: 'weekly'
+    groups:
+      patch-dependencies:
+        update-types: 
+          - "patch"
     labels:
       - 'github-actions'
