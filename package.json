@@ -4,6 +4,7 @@
   "private": true,
   "description": "Sign apk and aab files.",
   "type": "module",
+  "main": "lib/main.js",
   "scripts": {
     "build": "tsc",
     "format": "prettier --write ./src",
@@ -12,7 +13,7 @@
     "lint-check": "eslint",
     "package": "ncc build --source-map --license licenses.txt",
     "test": "jest",
-    "all": "npm run build && npm run format && npm run lint && npm run package"
+    "all": "npm run build && npm run package"
   },
   "keywords": [
     "actions",
