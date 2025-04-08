@@ -35,9 +35,9 @@
     "eslint": "^9.23.0",
     "eslint-plugin-github": "^5.1.8",
     "eslint-plugin-jest": "^28.11.0",
-    "eslint-plugin-prettier": "^5.2.3",
+    "eslint-plugin-prettier": "^5.2.6",
     "js-yaml": "^4.1.0",
     "prettier": "3.5.3",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.3"
   }
 }
