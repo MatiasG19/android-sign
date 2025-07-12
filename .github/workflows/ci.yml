@@ -36,3 +36,18 @@ jobs:
       - name: Lint
         working-directory: src
         run: deno lint
+
+      - name: Cat for GitHub Actions
+        uses: pCYSl5EDgo/cat@1.0.0
+        id: get_key
+        with:
+          path: testAssets/key_base64.txt
+
+      - name: Sign APK and AAB
+        uses: ./
+        with:
+          releaseDirectory: ./out
+          signingKeyBase64: ${{ steps.get_key.outputs.text }}
+          alias: test_key
+          keyStorePassword: android
+          keyPassword: android
