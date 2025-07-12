@@ -1,7 +1,7 @@
 import * as core from '@actions/core'
-import fs, { Dirent } from 'fs'
-import path from 'path'
-import { signAabFile, signApkFile } from './sign'
+import fs, { Dirent } from 'node:fs'
+import { join as pathJoin } from '@std/path'
+import { signAabFile, signApkFile } from './sign.ts'
 
 function findReleaseFile(releaseDir: string): Dirent[] {
   return fs
@@ -13,7 +13,7 @@ function findReleaseFile(releaseDir: string): Dirent[] {
 async function run(): Promise<void> {
   try {
     const buildDir = core.getInput('buildDirectory') ?? 'build'
-    const output = core.getInput('output') ?? path.join('build', 'signed')
+    const output = core.getInput('output') ?? pathJoin('build', 'signed')
 
     const releaseDirs = core
       .getInput('releaseDirectory')
@@ -23,7 +23,7 @@ async function run(): Promise<void> {
     const alias = core.getInput('alias')
     const keyStorePassword = core.getInput('keyStorePassword')
     const keyPassword = core.getInput('keyPassword')
-    const signingKey = path.join(buildDir, 'signingKey.jks')
+    const signingKey = pathJoin(buildDir, 'signingKey.jks')
     fs.writeFileSync(signingKey, signingKeyBase64, 'base64')
     if (!fs.existsSync(output)) {
       fs.mkdirSync(output, { recursive: true })
@@ -37,7 +37,7 @@ async function run(): Promise<void> {
         }
 
         core.debug(`File found: ${releaseFile}`)
-        const releaseFilePath = path.join(releaseDir, releaseFile.name)
+        const releaseFilePath = pathJoin(releaseDir, releaseFile.name)
         let signedReleaseFile = ''
         if (releaseFile.name.endsWith('.apk')) {
           signedReleaseFile = await signApkFile(
@@ -61,7 +61,7 @@ async function run(): Promise<void> {
         }
         fs.copyFileSync(
           signedReleaseFile,
-          path.join(
+          pathJoin(
             output,
             signedReleaseFile.split(/(\\|\/)/g).pop() ?? releaseFile.name
           )

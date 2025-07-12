@@ -1,9 +1,9 @@
 name: 'Android Sign 2'
-description: 'An action to sign an Android release APK or AAB'
+author: 'MatiasG19'
+description: 'An action to sign an Android release APK or AAB (fork of Tlaster/android-sign)'
 branding:
   icon: 'award'
   color: 'green'
-author: 'Tlaster'
 inputs:
   releaseDirectory:
     description: 'The directory to find your release to sign'
@@ -27,5 +27,5 @@ inputs:
     description: 'The output directory for sign, default to build/signed'
     required: false
 runs:
-  using: 'node22'
-  main: 'dist/index.js'
+  using: 'docker'
+  image: 'Dockerfile'
