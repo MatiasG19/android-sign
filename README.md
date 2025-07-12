@@ -40,9 +40,9 @@ Then copy the contents of the `.txt` file to your GH secrets
 
 **Optional:** The output directory for sign, default to `build/signed`
 
-## ENV: `BUILD_TOOLS_VERSION`
+### ENV: `BUILD_TOOLS_VERSION`
 
-**Optional:** You can manually specify a version of build-tools to use. We use `30.0.2` by default.
+**Optional:** Will get latest installed from `/usr/local/lib/android/sdk/build-tools/` when not set
 
 ## Example usage
 
@@ -62,5 +62,5 @@ steps:
       keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
       keyPassword: ${{ secrets.KEY_PASSWORD }}
     env:
-      BUILD_TOOLS_VERSION: "30.0.2"
+      BUILD_TOOLS_VERSION: "36.0.0" 
 ```
