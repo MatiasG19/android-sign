@@ -15,7 +15,7 @@ jobs:
           path: ~/.cache/deno
           key: ${{ runner.os }}-deno-${{ hashFiles('**/deno.lock') }}
           restore-keys: |
-            ${{ runner.os }}-deno-*
+            ${{ runner.os }}-deno-
 
       - name: Set up Deno
         uses: denoland/setup-deno@v2
