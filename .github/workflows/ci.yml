@@ -38,7 +38,7 @@ jobs:
         run: deno lint
 
       - name: Get signing key
-        run: echo "SIGNING_KEY=$(cat tests/assets/key_base64.txt)" >> $GITHUB_ENV
+        run: echo "SIGNING_KEY=$(cat tests/assets/key_base64.txt | tr -d '\n')" >> $GITHUB_ENV
 
       - name: Setup Java
         uses: actions/setup-java@v4
