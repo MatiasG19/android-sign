@@ -12,10 +12,8 @@ export async function signApkFile(
   keyStorePassword: string,
   keyPassword?: string
 ): Promise<string> {
-  core.debug('Zipaligning APK file')
-
-  // Find zipalign executable
-  const buildToolsVersion = process.env.BUILD_TOOLS_VERSION || '30.0.2'
+  const buildToolsVersion = process.env.BUILD_TOOLS_VERSION || await exec.getExecOutput("ls", ['/usr/local/lib/android/sdk/build-tools/', '|', 'tail', '-n', '1'])
+  core.debug("Build Tools Version: " + buildToolsVersion)
   const androidHome = process.env.ANDROID_HOME
   if (!androidHome) {
     core.error('require ANDROID_HOME to be execute')
@@ -30,14 +28,12 @@ export async function signApkFile(
   core.debug(`Found 'zipalign' @ ${zipAlign}`)
 
   // Align the apk file
+  core.debug('Zipaligning APK file')
   const alignedApkFile = apkFile.replace('.apk', '-aligned.apk')
   await exec.exec(`"${zipAlign}"`, ['-c', '-v', '4', apkFile])
-
   await exec.exec(`"cp"`, [apkFile, alignedApkFile])
 
   core.debug('Signing APK')
-
-  // find apksigner path
   const apkSigner = path.join(buildTools, 'apksigner')
   core.debug(`Found apksigner: ${apkSigner}`)
 

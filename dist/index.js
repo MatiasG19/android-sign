@@ -19818,7 +19818,7 @@ var require_exec = __commonJS({
       });
     }
     exports.exec = exec3;
-    function getExecOutput(commandLine, args, options) {
+    function getExecOutput2(commandLine, args, options) {
       var _a, _b;
       return __awaiter(this, void 0, void 0, function* () {
         let stdout = "";
@@ -19855,7 +19855,7 @@ var require_exec = __commonJS({
         };
       });
     }
-    exports.getExecOutput = getExecOutput;
+    exports.getExecOutput = getExecOutput2;
   }
 });
 
@@ -20269,8 +20269,14 @@ import * as path from "node:path";
 import * as fs from "node:fs";
 import * as process2 from "node:process";
 async function signApkFile(apkFile, signingKeyFile, alias, keyStorePassword, keyPassword) {
-  core.debug("Zipaligning APK file");
-  const buildToolsVersion = process2.env.BUILD_TOOLS_VERSION || "30.0.2";
+  const buildToolsVersion = process2.env.BUILD_TOOLS_VERSION || await exec.getExecOutput("ls", [
+    "/usr/local/lib/android/sdk/build-tools/",
+    "|",
+    "tail",
+    "-n",
+    "1"
+  ]);
+  core.debug("Build Tools Version: " + buildToolsVersion);
   const androidHome = process2.env.ANDROID_HOME;
   if (!androidHome) {
     core.error("require ANDROID_HOME to be execute");
@@ -20278,10 +20284,11 @@ async function signApkFile(apkFile, signingKeyFile, alias, keyStorePassword, key
   }
   const buildTools = path.join(androidHome, `build-tools/${buildToolsVersion}`);
   if (!fs.existsSync(buildTools)) {
-    core.error(`Couldnt find the Android build tools @ ${buildTools}`);
+    core.error(`Couldn't find the Android build tools @ ${buildTools}`);
   }
   const zipAlign = path.join(buildTools, "zipalign");
   core.debug(`Found 'zipalign' @ ${zipAlign}`);
+  core.debug("Zipaligning APK file");
   const alignedApkFile = apkFile.replace(".apk", "-aligned.apk");
   await exec.exec(`"${zipAlign}"`, [
     "-c",
