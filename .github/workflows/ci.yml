@@ -52,8 +52,9 @@ jobs:
       - name: Sign APK and AAB
         uses: ./
         with:
-          releaseDirectory: ./out
+          releaseDirectory: testAssets
           signingKeyBase64: ${{ steps.get_key.outputs.text }}
+          output: signed
           alias: test_key
           keyStorePassword: android
           keyPassword: android
