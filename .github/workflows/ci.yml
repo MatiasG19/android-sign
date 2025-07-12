@@ -15,6 +15,7 @@ jobs:
           path: |
             ~/.deno
             ~/.cache/deno
+            /opt/hostedtoolcache/deno
           key: ${{ runner.os }}-deno-${{ hashFiles('**/deps.ts') }}
           restore-keys: |
             ${{ runner.os }}-deno-
