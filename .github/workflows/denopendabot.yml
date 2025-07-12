@@ -1,0 +1,53 @@
+name: denopendabot
+
+on:
+  schedule:
+    - cron: "0 0 * * 1" # Runs every Monday at midnight
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  check-updates:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./src
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Check for updates
+        id: check-updates
+        run: |
+          deno outdated > outdated.txt
+          if [ -s outdated.txt ]; then
+            echo "UPDATE_DEPS=1" >> $GITHUB_ENV
+          fi
+          cat outdated.txt
+          rm outdated.txt
+
+      - name: Check for updates
+        if: success() && env.UPDATE_DEPS == '1'
+        run: deno outdated -u
+
+      - name: Check in updates
+        if: success() && env.UPDATE_DEPS == '1'
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git checkout -b update-dependencies-$(date +%Y%m%d%H%M%S)
+          git add deno.json
+          git add deno.lock
+          git commit -m 'Update dependencies'
+          git push --set-upstream origin update-dependencies-$(date +%Y%m%d%H%M%S)
+
+      - name: Pullrequest
+        if: success() && env.UPDATE_DEPS == '1'
+        run: gh pr create --head update-dependencies-$(date +%Y%m%d%H%M%S) --title 'chore(deps) Bump deno dependencies' --body 'Created by denopendabot GitHub action'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
