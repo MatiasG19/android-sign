@@ -39,7 +39,7 @@ jobs:
 
       - name: Get signing key
         run: |
-          SIGNING_KEY=$(cat test/assets/key_base64.txt)
+          SIGNING_KEY=$(cat tests/assets/key_base64.txt)
           echo "SIGNING_KEY=${SIGNING_KEY}" >> $GITHUB_ENV
 
       - name: Setup Java
@@ -51,7 +51,7 @@ jobs:
       - name: Sign APK and AAB
         uses: ./
         with:
-          releaseDirectory: test/assets
+          releaseDirectory: tests/assets
           signingKeyBase64: ${{ env.SIGNING_KEY }}
           output: signed
           alias: test_key
