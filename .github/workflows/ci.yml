@@ -14,10 +14,10 @@ jobs:
         id: cache-deno
         with:
           path: |
-            /home/runner/.deno
-            /home/runner/.cache/deno
+            ~/.deno
+            ~/.cache/deno
             /opt/hostedtoolcache/deno
-          key: ${{ runner.os }}-deno-${{ hashFiles('**/deno.lock') }}
+          key: ${{ runner.os }}-deno-${{ hashFiles('**/deps.ts') }}
           restore-keys: |
             ${{ runner.os }}-deno-
 
