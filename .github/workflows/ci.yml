@@ -37,9 +37,9 @@ jobs:
         working-directory: src
         run: deno lint
 
-      - name: Cat for GitHub Actions
+      - name: Get signing key
         run: |
-          SIGNING_KEY=$(cat testAssets/key_base64.txt)
+          SIGNING_KEY=$(cat test/assets/key_base64.txt)
           echo "SIGNING_KEY=${SIGNING_KEY}" >> $GITHUB_ENV
 
       - name: Setup Java
