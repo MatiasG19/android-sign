@@ -1,7 +1,6 @@
 import * as exec from '@actions/exec'
 import * as core from '@actions/core'
 import * as io from '@actions/io'
-// import { join as pathJoin } from '@std/path'
 import * as path from 'node:path'
 import * as fs from 'node:fs'
 import * as process from 'node:process'

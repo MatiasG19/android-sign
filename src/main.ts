@@ -1,6 +1,5 @@
 import * as core from '@actions/core'
 import fs, { Dirent } from 'node:fs'
-// import { join as path.join } from '@std/path'
 import * as path from 'node:path'
 import { signAabFile, signApkFile } from './sign.ts'
 
