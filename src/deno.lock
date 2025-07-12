@@ -1,11 +1,8 @@
 {
   "version": "5",
   "specifiers": {
-    "npm:@actions/core@*": "1.11.1",
     "npm:@actions/core@^1.11.1": "1.11.1",
-    "npm:@actions/exec@*": "1.1.1",
     "npm:@actions/exec@^1.1.1": "1.1.1",
-    "npm:@actions/io@*": "1.1.3",
     "npm:@actions/io@^1.1.3": "1.1.3",
     "npm:@types/node@*": "22.13.14"
   },
@@ -54,43 +51,6 @@
         "@fastify/busboy"
       ]
     }
-  },
-  "redirects": {
-    "https://deno.land/std/node/child_process.ts": "https://deno.land/std@0.224.0/node/child_process.ts",
-    "https://deno.land/std/node/crypto.ts": "https://deno.land/std@0.224.0/node/crypto.ts",
-    "https://deno.land/std/node/fs.ts": "https://deno.land/std@0.224.0/node/fs.ts",
-    "https://deno.land/std/node/os.ts": "https://deno.land/std@0.224.0/node/os.ts",
-    "https://deno.land/std/node/path.ts": "https://deno.land/std@0.224.0/node/path.ts",
-    "https://deno.land/std/node/string_decoder.ts": "https://deno.land/std@0.224.0/node/string_decoder.ts",
-    "https://deno.land/std/node/timers.ts": "https://deno.land/std@0.224.0/node/timers.ts"
-  },
-  "remote": {
-    "https://cdn.skypack.dev/-/@actions/core@v1.11.1-PZJ1vNISQ3K38Kxxi1RL/dist=es2019,mode=imports/optimized/@actions/core.js": "a88587794dfe431f29d357b3384c265c891f15ff736b66fd23a9f1671912570d",
-    "https://cdn.skypack.dev/-/@actions/exec@v1.1.1-QB5wbZi5EDEz644n9b22/dist=es2019,mode=imports/optimized/@actions/exec.js": "a93bd0a029fa37d59917954186f66ec5c35e4301ece40ea5582187717bc7fb49",
-    "https://cdn.skypack.dev/-/@actions/http-client@v2.2.3-P1QGjiyKLBTFUACSbmvk/dist=es2019,mode=imports/optimized/@actions/http-client.js": "9ec72c0a5fa9decab19fb85a43a6047ac6b380bd86d699964c53dc9ed3dea83d",
-    "https://cdn.skypack.dev/-/@actions/http-client@v2.2.3-P1QGjiyKLBTFUACSbmvk/dist=es2019,mode=imports/unoptimized/lib/auth.js": "b9abf7595588ad4eb736f717adebf1e218b060655fe8d718ebc89e03aeb637d6",
-    "https://cdn.skypack.dev/-/@actions/io@v1.1.2-IWE68sCV3k1J6uCV91bw/dist=es2019,mode=imports/optimized/@actions/io.js": "5ef0d791df904b0d45128389c248defdce3246a1e7b8eed82361c481d7ba1fd6",
-    "https://cdn.skypack.dev/-/@actions/io@v1.1.2-IWE68sCV3k1J6uCV91bw/dist=es2019,mode=imports/unoptimized/lib/io-util.js": "249d5708e9a56d6aa447aa5758df8a4c86db6846ffbb0bd43e8374fd993401cf",
-    "https://cdn.skypack.dev/-/tunnel@v0.0.6-XiNbQnVcLmDK0CFC6dI3/dist=es2019,mode=imports/optimized/tunnel.js": "e8c167a3d1dbd14948ba9ade38e2e975655c6653287b976f1dee6982f7bb53f9",
-    "https://cdn.skypack.dev/@actions/core": "15b0f19c9ff828a8ef94a43ad25086774ed3937a9d66535424d7a631c8923816",
-    "https://cdn.skypack.dev/@actions/core@^1.11.1": "15b0f19c9ff828a8ef94a43ad25086774ed3937a9d66535424d7a631c8923816",
-    "https://cdn.skypack.dev/error/build:undici@v5.28.4-bOZY8Ux7ihz2FYXWHtPF?from=@actions/http-client": "e6d584b98f03d4acb36d20ff1a68fce7ee80fdb091d7cac2acccd274634792eb",
-    "https://cdn.skypack.dev/error/node:http?from=@actions/http-client": "8be6408acf18404d11f09aa0ab41d80463f651465009043222d168a4df4e8c3f",
-    "https://cdn.skypack.dev/error/node:http?from=tunnel": "cdcc1034d2b496ee7b7e0c27dab6fdadc362b7088a08d0f11219e4612f4ea74c",
-    "https://cdn.skypack.dev/error/node:https?from=@actions/http-client": "4c62ec8015623034242180d4911c042d2c3d6cc8da38ea3a9d2d991b5764bfdf",
-    "https://cdn.skypack.dev/error/node:https?from=tunnel": "cacbc7adbcb4095f0977322a67cf2aeacf3c9c8f94c4b91deb8b2796ec5d0a5f",
-    "https://cdn.skypack.dev/error/node:node:child_process?from=@actions/exec": "149cf13cad60652456dd6b0d42c2abd1dacfd778a835e2e92f978d4f3ed582ad",
-    "https://cdn.skypack.dev/error/node:node:child_process?from=@actions/io": "8e332d8e8fb09ff74b9dc721c5352d7d245602b0d9bfd2e7d82f93da903b7149",
-    "https://cdn.skypack.dev/error/node:node:crypto?from=@actions/core": "051344c854ed055cdc4503cc2ba1b62ac0ab3e2ec91e65f46602b8a05590f819",
-    "https://cdn.skypack.dev/error/node:node:fs?from=@actions/core": "d351349b29aa825d045dbcfb7c7fef96c31cb85fb308e21f0651c8eee3f76e7d",
-    "https://cdn.skypack.dev/error/node:node:fs?from=@actions/io": "65f7d525bf01d2ce2ade374542da1cc407ad3fcd21984f9596738734367c28ad",
-    "https://cdn.skypack.dev/error/node:node:http?from=@actions/http-client": "cfb561955092cc48a77157280c5d307a2eea75a773494c0ad24cb41f3d0fa43f",
-    "https://cdn.skypack.dev/error/node:node:https?from=@actions/http-client": "2d6014d38ef79ae1582ef51b2c8612d599b19454302693d794f23b997cc09517",
-    "https://cdn.skypack.dev/error/node:node:os?from=@actions/core": "b5d128e98bb349dd43ccf2c6a3db59011139d32df612135dcdf108eb2028904f",
-    "https://cdn.skypack.dev/error/node:node:os?from=@actions/exec": "0e2a204c0cbea2ddabad7294a58045ee390d7b5df390bf703f89def5d4184fa1",
-    "https://cdn.skypack.dev/error/node:node:string_decoder?from=@actions/exec": "5bdad819c16d72bceffe89711b313e852b9ec9912cd52b22f72d6fb98a8e64e1",
-    "https://cdn.skypack.dev/error/node:node:timers?from=@actions/exec": "d7a1f13d9d405ed5b82732632b75675bfce225861bfc442877c365cdc716955f",
-    "https://cdn.skypack.dev/error/node:tls?from=tunnel": "9d76bee5a4ac9fe4cbe5290e066eae14c3d7d45b9da321f3515f274e052c5bf9"
   },
   "workspace": {
     "dependencies": [
