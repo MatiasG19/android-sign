@@ -15,7 +15,8 @@ jobs:
         with:
           path: |
             /home/runner/.deno
-            /home/runner/.cache/deno/deps/https/deno.land
+            /home/runner/.cache/deno
+            /opt/hostedtoolcache/deno
           key: ${{ runner.os }}-deno-${{ hashFiles('**/deno.lock') }}
           restore-keys: |
             ${{ runner.os }}-deno-
