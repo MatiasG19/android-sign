@@ -48,7 +48,6 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '21'
-          cache: 'gradle'
 
       - name: Sign APK and AAB
         uses: ./
