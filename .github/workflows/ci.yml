@@ -23,10 +23,13 @@ jobs:
           deno-version: v2.x
 
       - name: Install dependencies
+        working-directory: src
         run: deno cache main.ts
 
       - name: Check format
+        working-directory: src
         run: deno fmt --check
 
       - name: Lint
+        working-directory: src
         run: deno lint
