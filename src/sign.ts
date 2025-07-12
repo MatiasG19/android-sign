@@ -1,8 +1,10 @@
 import * as exec from '@actions/exec'
 import * as core from '@actions/core'
 import * as io from '@actions/io'
-import { join as pathJoin } from '@std/path'
+// import { join as pathJoin } from '@std/path'
+import * as path from 'node:path'
 import * as fs from 'node:fs'
+import * as process from 'node:process'
 
 export async function signApkFile(
   apkFile: string,
@@ -14,18 +16,18 @@ export async function signApkFile(
   core.debug('Zipaligning APK file')
 
   // Find zipalign executable
-  const buildToolsVersion = Deno.env.get('BUILD_TOOLS_VERSION') || '30.0.2'
-  const androidHome = Deno.env.get('ANDROID_HOME')
+  const buildToolsVersion = process.env.BUILD_TOOLS_VERSION || '30.0.2'
+  const androidHome = process.env.ANDROID_HOME
   if (!androidHome) {
     core.error('require ANDROID_HOME to be execute')
     throw new Error('ANDROID_HOME is null')
   }
-  const buildTools = pathJoin(androidHome, `build-tools/${buildToolsVersion}`)
+  const buildTools = path.join(androidHome, `build-tools/${buildToolsVersion}`)
   if (!fs.existsSync(buildTools)) {
     core.error(`Couldnt find the Android build tools @ ${buildTools}`)
   }
 
-  const zipAlign = pathJoin(buildTools, 'zipalign')
+  const zipAlign = path.join(buildTools, 'zipalign')
   core.debug(`Found 'zipalign' @ ${zipAlign}`)
 
   // Align the apk file
@@ -37,7 +39,7 @@ export async function signApkFile(
   core.debug('Signing APK')
 
   // find apksigner path
-  const apkSigner = pathJoin(buildTools, 'apksigner')
+  const apkSigner = path.join(buildTools, 'apksigner')
   core.debug(`Found apksigner: ${apkSigner}`)
 
   // apksigner sign --ks my-release-key.jks --out my-app-release.apk my-app-unsigned-aligned.apk
