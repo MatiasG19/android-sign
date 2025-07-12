@@ -38,10 +38,9 @@ jobs:
         run: deno lint
 
       - name: Cat for GitHub Actions
-        uses: pCYSl5EDgo/cat@1.0.0
-        id: get_key
-        with:
-          path: testAssets/key_base64.txt
+        run: |
+          SIGNING_KEY=$(cat testAssets/key_base64.txt)
+          echo "SIGNING_KEY=${SIGNING_KEY}" >> $GITHUB_ENV
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -52,8 +51,8 @@ jobs:
       - name: Sign APK and AAB
         uses: ./
         with:
-          releaseDirectory: testAssets
-          signingKeyBase64: ${{ steps.get_key.outputs.text }}
+          releaseDirectory: test/assets
+          signingKeyBase64: ${{ env.SIGNING_KEY }}
           output: signed
           alias: test_key
           keyStorePassword: android
