@@ -43,6 +43,13 @@ jobs:
         with:
           path: testAssets/key_base64.txt
 
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'gradle'
+
       - name: Sign APK and AAB
         uses: ./
         with:
