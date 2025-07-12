@@ -10,10 +10,14 @@ export async function signApkFile(
   signingKeyFile: string,
   alias: string,
   keyStorePassword: string,
-  keyPassword?: string
+  keyPassword?: string,
 ): Promise<string> {
-  const buildToolsVersion = process.env.BUILD_TOOLS_VERSION || await exec.getExecOutput("bash", ['-c', 'ls /usr/local/lib/android/sdk/build-tools/ | tail -n 1'])
-  core.debug("Build Tools Version: " + buildToolsVersion)
+  const buildToolsVersion = process.env.BUILD_TOOLS_VERSION ||
+    await exec.getExecOutput('bash', [
+      '-c',
+      'ls /usr/local/lib/android/sdk/build-tools/ | tail -n 1',
+    ])
+  core.debug('Build Tools Version: ' + buildToolsVersion)
   const androidHome = process.env.ANDROID_HOME
   if (!androidHome) {
     core.error('require ANDROID_HOME to be execute')
@@ -48,7 +52,7 @@ export async function signApkFile(
     '--ks-pass',
     `pass:${keyStorePassword}`,
     '--out',
-    signedApkFile
+    signedApkFile,
   ]
 
   if (keyPassword) {
@@ -70,7 +74,7 @@ export async function signAabFile(
   signingKeyFile: string,
   alias: string,
   keyStorePassword: string,
-  keyPassword?: string
+  keyPassword?: string,
 ): Promise<string> {
   core.debug('Signing AAB')
   const jarSignerPath = await io.which('jarsigner', true)
@@ -87,7 +91,7 @@ export async function signAabFile(
     '-keystore',
     signingKeyFile,
     '-storepass',
-    keyStorePassword
+    keyStorePassword,
   ]
 
   if (keyPassword) {

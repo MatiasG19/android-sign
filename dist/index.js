@@ -20269,12 +20269,9 @@ import * as path from "node:path";
 import * as fs from "node:fs";
 import * as process2 from "node:process";
 async function signApkFile(apkFile, signingKeyFile, alias, keyStorePassword, keyPassword) {
-  const buildToolsVersion = process2.env.BUILD_TOOLS_VERSION || await exec.getExecOutput("ls", [
-    "/usr/local/lib/android/sdk/build-tools/",
-    "|",
-    "tail",
-    "-n",
-    "1"
+  const buildToolsVersion = process2.env.BUILD_TOOLS_VERSION || await exec.getExecOutput("bash", [
+    "-c",
+    "ls /usr/local/lib/android/sdk/build-tools/ | tail -n 1"
   ]);
   core.debug("Build Tools Version: " + buildToolsVersion);
   const androidHome = process2.env.ANDROID_HOME;
