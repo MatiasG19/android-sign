@@ -37,10 +37,10 @@ jobs:
         working-directory: src
         run: deno lint
 
-      - name: Get signing key
-        run: |
-          SIGNING_KEY=$(cat tests/assets/key_base64.txt)
-          echo "SIGNING_KEY=${SIGNING_KEY}" >> $GITHUB_ENV
+      # - name: Get signing key
+      #   run: |
+      #     SIGNING_KEY=$(cat tests/assets/key_base64.txt)
+      #     echo "SIGNING_KEY=${SIGNING_KEY}" >> $GITHUB_ENV
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -52,7 +52,7 @@ jobs:
         uses: ./
         with:
           releaseDirectory: tests/assets
-          signingKeyBase64: ${{ env.SIGNING_KEY }}
+          signingKeyBase64: ${{ $(cat tests/assets/key_base64.txt) }}
           output: signed
           alias: test_key
           keyStorePassword: android
