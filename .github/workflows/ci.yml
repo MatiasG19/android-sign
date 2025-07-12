@@ -13,14 +13,11 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            ~/.deno
-            ~/.cache/deno
             /opt/hostedtoolcache/deno
           key: ${{ runner.os }}-deno-${{ hashFiles('**/deps.ts') }}
           restore-keys: |
             ${{ runner.os }}-deno-
 
-              
       - name: Set up Deno
         uses: denoland/setup-deno@v2
         with:
