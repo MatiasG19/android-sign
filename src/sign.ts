@@ -12,7 +12,7 @@ export async function signApkFile(
   keyStorePassword: string,
   keyPassword?: string
 ): Promise<string> {
-  const buildToolsVersion = process.env.BUILD_TOOLS_VERSION || await exec.getExecOutput("ls", ['/usr/local/lib/android/sdk/build-tools/', '|', 'tail', '-n', '1'])
+  const buildToolsVersion = process.env.BUILD_TOOLS_VERSION || await exec.getExecOutput("bash", ['-c', 'ls /usr/local/lib/android/sdk/build-tools/ | tail -n 1'])
   core.debug("Build Tools Version: " + buildToolsVersion)
   const androidHome = process.env.ANDROID_HOME
   if (!androidHome) {
