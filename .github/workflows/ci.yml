@@ -11,6 +11,7 @@ jobs:
 
       - name: Cache Deno dependencies
         uses: actions/cache@v4
+        id: cache-deno
         with:
           path: ~/.cache/deno
           key: ${{ runner.os }}-deno-${{ hashFiles('**/deno.lock') }}
@@ -18,6 +19,7 @@ jobs:
             ${{ runner.os }}-deno-
 
       - name: Set up Deno
+        if: steps.cache-deno.outputs.cache-hit != 'true'
         uses: denoland/setup-deno@v2
         with:
           deno-version: v2.x
