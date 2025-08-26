@@ -41,7 +41,7 @@ jobs:
         run: echo "SIGNING_KEY=$(cat tests/assets/key_base64.txt | tr -d '\n')" >> $GITHUB_ENV
 
       - name: Setup Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
           java-version: '21'
